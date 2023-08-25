@@ -1514,7 +1514,7 @@ class CudaKernelParamCache:
                 config.aot_inductor.output_path
             )[0],
         )
-        
+
         if torch.version.hip is None:
             params["cubin_path"] = path
         else:
