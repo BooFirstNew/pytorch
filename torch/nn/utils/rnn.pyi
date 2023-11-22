@@ -3,7 +3,9 @@ from typing import Any, Iterable, NamedTuple, Optional, overload, Sequence, Tupl
 from typing_extensions import Self
 
 from torch import Tensor
-from torch.types import _device, _dtype
+
+from torch._prims_common import DeviceLikeType
+from torch.types import _dtype
 
 class PackedSequence_(NamedTuple):
     data: Tensor
@@ -42,7 +44,7 @@ class PackedSequence(PackedSequence_):
     @overload
     def to(
         self: Self,
-        device: Optional[Union[_device, str]] = None,
+        device: Optional[DeviceLikeType] = None,
         dtype: Optional[_dtype] = None,
         non_blocking: bool = False,
         copy: bool = False,
