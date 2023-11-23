@@ -9,7 +9,17 @@ import gzip
 
 import logging
 
-from typing import Callable, Generator, Generic, List, Literal, Mapping, Optional, Type, TypeVar
+from typing import (
+    Callable,
+    Generator,
+    Generic,
+    List,
+    Literal,
+    Mapping,
+    Optional,
+    Type,
+    TypeVar,
+)
 
 from typing_extensions import Self
 
@@ -267,7 +277,7 @@ class DiagnosticContext(Generic[_Diagnostic]):
     options: infra.DiagnosticOptions = dataclasses.field(
         default_factory=infra.DiagnosticOptions
     )
-    diagnostics: List[Self] = dataclasses.field(init=False, default_factory=list)
+    diagnostics: List[_Diagnostic] = dataclasses.field(init=False, default_factory=list)
     # TODO(bowbao): Implement this.
     # _invocation: infra.Invocation = dataclasses.field(init=False)
     _inflight_diagnostics: List[Self] = dataclasses.field(
@@ -320,7 +330,7 @@ class DiagnosticContext(Generic[_Diagnostic]):
             with open(file_path, "w") as f:
                 f.write(self.to_json())
 
-    def log(self, diagnostic: Self) -> None:
+    def log(self, diagnostic: _Diagnostic) -> None:
         """Logs a diagnostic.
 
         This method should be used only after all the necessary information for the diagnostic
@@ -337,7 +347,7 @@ class DiagnosticContext(Generic[_Diagnostic]):
             diagnostic.level = infra.Level.ERROR
         self.diagnostics.append(diagnostic)
 
-    def log_and_raise_if_error(self, diagnostic: Self) -> None:
+    def log_and_raise_if_error(self, diagnostic: _Diagnostic) -> None:
         """Logs a diagnostic and raises an exception if it is an error.
 
         Use this method for logging non inflight diagnostics where diagnostic level is not known or
@@ -390,7 +400,7 @@ class DiagnosticContext(Generic[_Diagnostic]):
         """
         return self._inflight_diagnostics.pop()
 
-    def inflight_diagnostic(self, rule: Optional[infra.Rule] = None) -> Self:
+    def inflight_diagnostic(self, rule: Optional[infra.Rule] = None) -> _Diagnostic:
         if rule is None:
             # TODO(bowbao): Create builtin-rules and create diagnostic using that.
             if len(self._inflight_diagnostics) <= 0:
