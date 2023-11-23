@@ -2090,9 +2090,6 @@ class SliceView(View):
 
         end = sizevars.evaluate_min(end, new_size[dim])
         start = sizevars.evaluate_min(start, end)
-        if start == 0 and sizevars.size_hint(end - new_size[dim]) == 0 and step == 1:
-            sizevars.guard_equals(end, new_size[dim])
-            return x
 
         new_size[dim] = FloorDiv(end - start + (step - 1), step)
 
