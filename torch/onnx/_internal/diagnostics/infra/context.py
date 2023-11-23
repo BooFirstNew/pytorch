@@ -280,7 +280,7 @@ class DiagnosticContext(Generic[_Diagnostic]):
     diagnostics: List[_Diagnostic] = dataclasses.field(init=False, default_factory=list)
     # TODO(bowbao): Implement this.
     # _invocation: infra.Invocation = dataclasses.field(init=False)
-    _inflight_diagnostics: List[Self] = dataclasses.field(
+    _inflight_diagnostics: List[_Diagnostic] = dataclasses.field(
         init=False, default_factory=list
     )
     _previous_log_level: int = dataclasses.field(init=False, default=logging.WARNING)
